@@ -16,6 +16,7 @@
 		DC4DD9CB29E7A15E00562433 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC4DD9C929E7A15E00562433 /* LaunchScreen.storyboard */; };
 		DC4DD9D529E7AAB700562433 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9D429E7AAB700562433 /* TopNavigationStackView.swift */; };
 		DC4DD9D729E7AAEA00562433 /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9D629E7AAEA00562433 /* HomeBottomControlsStackView.swift */; };
+		DC4DD9D929E7B92500562433 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9D829E7B92500562433 /* CardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		DC4DD9CC29E7A15E00562433 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DC4DD9D429E7AAB700562433 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		DC4DD9D629E7AAEA00562433 /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
+		DC4DD9D829E7B92500562433 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		E6466DE20C86C73C64C5CBF5 /* Pods_iOS_TInder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_TInder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -109,6 +111,7 @@
 			children = (
 				DC4DD9D429E7AAB700562433 /* TopNavigationStackView.swift */,
 				DC4DD9D629E7AAEA00562433 /* HomeBottomControlsStackView.swift */,
+				DC4DD9D829E7B92500562433 /* CardView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				DC4DD9BF29E7A15C00562433 /* AppDelegate.swift in Sources */,
 				DC4DD9D729E7AAEA00562433 /* HomeBottomControlsStackView.swift in Sources */,
 				DC4DD9C129E7A15C00562433 /* SceneDelegate.swift in Sources */,
+				DC4DD9D929E7B92500562433 /* CardView.swift in Sources */,
 				DC4DD9D529E7AAB700562433 /* TopNavigationStackView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

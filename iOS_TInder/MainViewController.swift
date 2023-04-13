@@ -11,28 +11,30 @@ import SnapKit
 class MainViewController: UIViewController {
     
     let topStackView = TopNavigationStackView()
-    let blueView = UIView()
+    let cardsDeckView = UIView()
     let bottomStackView = HomeBottomControlsStackView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         
-        blueView.backgroundColor = .blue
-
         setupViews()
+        setupDummyCards()
+    }
+    
+    fileprivate func setupDummyCards() {
+        
+        let cardView = CardView(frame: .zero)
+        cardsDeckView.addSubview(cardView)
+        cardView.snp.makeConstraints { make in
+            make.size.equalToSuperview()
+        }
+        
     }
     
     fileprivate func setupViews() {
         
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .white
-        
-        view.insertSubview(backgroundView, at: 0)
-        backgroundView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
-        }
-        
-        let overallStackView = UIStackView(arrangedSubviews: [topStackView, blueView, bottomStackView])
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomStackView])
         overallStackView.axis = .vertical
         view.addSubview(overallStackView)
         overallStackView.snp.makeConstraints { make in
@@ -40,8 +42,11 @@ class MainViewController: UIViewController {
             make.top.equalToSuperview().offset(30)
             make.trailing.leading.equalToSuperview()
         }
+        
+        overallStackView.isLayoutMarginsRelativeArrangement = true
+        overallStackView.layoutMargins = .init(top: 0, left: 8, bottom: 0, right: 8)
+        
+        overallStackView.bringSubviewToFront(cardsDeckView)
     }
-
-
 }
 
