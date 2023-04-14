@@ -17,6 +17,8 @@
 		DC4DD9D529E7AAB700562433 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9D429E7AAB700562433 /* TopNavigationStackView.swift */; };
 		DC4DD9D729E7AAEA00562433 /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9D629E7AAEA00562433 /* HomeBottomControlsStackView.swift */; };
 		DC4DD9D929E7B92500562433 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9D829E7B92500562433 /* CardView.swift */; };
+		DCBA41B729E90BEA0051F2A8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBA41B629E90BEA0051F2A8 /* User.swift */; };
+		DCBA41B929E90CEC0051F2A8 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBA41B829E90CEC0051F2A8 /* CardViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		DC4DD9D429E7AAB700562433 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		DC4DD9D629E7AAEA00562433 /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		DC4DD9D829E7B92500562433 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		DCBA41B629E90BEA0051F2A8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DCBA41B829E90CEC0051F2A8 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		E6466DE20C86C73C64C5CBF5 /* Pods_iOS_TInder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_TInder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -86,7 +90,8 @@
 		DC4DD9BD29E7A15C00562433 /* iOS_TInder */ = {
 			isa = PBXGroup;
 			children = (
-				DC4DD9C229E7A15C00562433 /* MainViewController.swift */,
+				DCBA41B529E90BDA0051F2A8 /* ViewModel */,
+				DCBA41B429E90BD60051F2A8 /* Model */,
 				DC4DD9D329E7A61300562433 /* View */,
 				DC4DD9D229E7A26300562433 /* Delegate */,
 				DC4DD9C429E7A15C00562433 /* Main.storyboard */,
@@ -112,8 +117,33 @@
 				DC4DD9D429E7AAB700562433 /* TopNavigationStackView.swift */,
 				DC4DD9D629E7AAEA00562433 /* HomeBottomControlsStackView.swift */,
 				DC4DD9D829E7B92500562433 /* CardView.swift */,
+				DCBA41B329E90BCA0051F2A8 /* Controller */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DCBA41B329E90BCA0051F2A8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC4DD9C229E7A15C00562433 /* MainViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DCBA41B429E90BD60051F2A8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DCBA41B629E90BEA0051F2A8 /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DCBA41B529E90BDA0051F2A8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DCBA41B829E90CEC0051F2A8 /* CardViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,8 +265,10 @@
 				DC4DD9BF29E7A15C00562433 /* AppDelegate.swift in Sources */,
 				DC4DD9D729E7AAEA00562433 /* HomeBottomControlsStackView.swift in Sources */,
 				DC4DD9C129E7A15C00562433 /* SceneDelegate.swift in Sources */,
+				DCBA41B929E90CEC0051F2A8 /* CardViewModel.swift in Sources */,
 				DC4DD9D929E7B92500562433 /* CardView.swift in Sources */,
 				DC4DD9D529E7AAB700562433 /* TopNavigationStackView.swift in Sources */,
+				DCBA41B729E90BEA0051F2A8 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

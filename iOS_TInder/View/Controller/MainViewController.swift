@@ -13,6 +13,9 @@ class MainViewController: UIViewController {
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomStackView = HomeBottomControlsStackView()
+    
+    let cardViewModels = [User(name: "Kelly", age: "23", proffesion: "Music DJ", imageName: "lady5c").toCardViewModel(),
+                          User(name: "Jenny", age: "18", proffesion: "Teacher", imageName: "lady4c").toCardViewModel()]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,12 +27,17 @@ class MainViewController: UIViewController {
     
     fileprivate func setupDummyCards() {
         
-        let cardView = CardView(frame: .zero)
-        cardsDeckView.addSubview(cardView)
-        cardView.snp.makeConstraints { make in
-            make.size.equalToSuperview()
+        for cardViewModel in cardViewModels {
+            let cardView = CardView(frame: .zero)
+            cardView.descriptionLabel.attributedText = cardViewModel.attributedString
+            cardView.imageView.image = UIImage(named:cardViewModel.imageName)
+            cardView.descriptionLabel.textAlignment = cardViewModel.textAlignment
+            
+            cardsDeckView.addSubview(cardView)
+            cardView.snp.makeConstraints { make in
+                make.size.equalToSuperview()
+            }
         }
-        
     }
     
     fileprivate func setupViews() {

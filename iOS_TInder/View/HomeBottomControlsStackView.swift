@@ -11,8 +11,6 @@ import SnapKit
 
 class HomeBottomControlsStackView: UIStackView {
     
-    
-    
     override init(frame: CGRect) {
         super .init(frame: frame)
         

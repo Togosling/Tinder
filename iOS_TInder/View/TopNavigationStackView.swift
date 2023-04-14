@@ -23,12 +23,10 @@ class TopNavigationStackView: UIStackView {
         
         backgroundColor = .white
 
-        
         profileButton.setImage(UIImage(named: "profile")?.withRenderingMode(.alwaysOriginal), for: .normal)
         chatButton.setImage(UIImage(named: "chat")?.withRenderingMode(.alwaysOriginal), for: .normal)
         fireImageView.contentMode = .scaleAspectFit
 
-        
         let subViews = [profileButton, UIView(), fireImageView, UIView(), chatButton]
         
         subViews.forEach { iv in
