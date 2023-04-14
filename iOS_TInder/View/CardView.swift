@@ -35,7 +35,20 @@ class CardView: UIView {
         
         setupViews()
         setupPanGesture()
-        
+    
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setupGradient()
+    }
+    
+    fileprivate func setupGradient() {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradientLayer.locations = [0.5,1.1]
+        gradientLayer.frame = self.frame
+        layer.insertSublayer(gradientLayer, at: 1)
     }
     
     fileprivate func setupPanGesture() {
@@ -92,6 +105,7 @@ class CardView: UIView {
         descriptionLabel.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-16)
             make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
         }
     }
     
