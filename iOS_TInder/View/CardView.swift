@@ -11,6 +11,30 @@ import SnapKit
 
 class CardView: UIView {
     
+    var cardViewModel: CardViewModel! {
+        didSet {
+            descriptionLabel.attributedText = cardViewModel.attributedString
+            imageView.image = UIImage(named:cardViewModel.imageNames.first ?? "")
+            descriptionLabel.textAlignment = cardViewModel.textAlignment
+            
+            (0 ..< cardViewModel.imageNames.count).forEach { (_) in
+                let barView = UIView()
+                barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+                barView.layer.cornerRadius = 4
+                barStackView.addArrangedSubview(barView)
+            }
+            barStackView.arrangedSubviews.first?.backgroundColor = .white
+            
+            cardViewModel.imageIndexObserver = {[weak self] (image, index) in
+                self?.imageView.image = image
+                self?.barStackView.arrangedSubviews.forEach { iv in
+                    iv.backgroundColor = UIColor(white: 0, alpha: 0.1)
+                }
+                self?.barStackView.arrangedSubviews[index].backgroundColor = .white
+            }
+        }
+    }
+    
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -25,22 +49,39 @@ class CardView: UIView {
     }()
     
     let threshold: CGFloat = 80
+    
+    let barStackView = UIStackView()
         
     override init(frame: CGRect) {
         super .init(frame: frame)
         
-        backgroundColor = .red
         layer.cornerRadius = 10
         clipsToBounds = true
         
         setupViews()
         setupPanGesture()
-    
+        setupTapGesture()
+        
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         setupGradient()
+    }
+    
+    fileprivate func setupTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func handleTap(sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: nil)
+        let direction = tapLocation.x > frame.width / 2 ? true : false
+        if direction {
+            cardViewModel.toNextPhoto()
+        } else {
+            cardViewModel.toPreviousPhoto()
+        }
     }
     
     fileprivate func setupGradient() {
@@ -100,6 +141,16 @@ class CardView: UIView {
         imageView.snp.makeConstraints { make in
             make.size.equalToSuperview()
         }
+        
+        addSubview(barStackView)
+        barStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(8)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+            make.height.equalTo(4)
+        }
+        barStackView.spacing = 4
+        barStackView.distribution = .fillEqually
         
         addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints { make in
