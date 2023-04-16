@@ -11,6 +11,8 @@ import SnapKit
 
 class RegistrationController: UIViewController {
     
+    let registrationViewModel = RegistrationViewModel()
+    
     let selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
@@ -48,16 +50,17 @@ class RegistrationController: UIViewController {
     let registerButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Register", for: .normal)
-        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
-        button.backgroundColor = #colorLiteral(red: 0.8235294118, green: 0, blue: 0.3254901961, alpha: 1)
+        button.isEnabled = false
+        button.backgroundColor = .lightGray
+        button.setTitleColor(UIColor.darkGray, for: .disabled)
         button.layer.cornerRadius = 22
         button.snp.makeConstraints { make in
             make.height.equalTo(44)
         }
         return button
     }()
-    
+            
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -65,6 +68,38 @@ class RegistrationController: UIViewController {
         setupLayout()
         setupNotificationObservers()
         setupTapGesture()
+        addTextFieldTargets()
+        validFromObserver()
+    }
+        
+    fileprivate func validFromObserver() {
+        registrationViewModel.formIsValid = {[weak self] formIsValid in
+            if formIsValid {
+                self?.registerButton.isEnabled = true
+                self?.registerButton.backgroundColor = #colorLiteral(red: 0.8235294118, green: 0, blue: 0.3254901961, alpha: 1)
+                self?.registerButton.setTitleColor(.white, for: .normal)
+            } else {
+                self?.registerButton.isEnabled = false
+                self?.registerButton.backgroundColor = .lightGray
+                self?.registerButton.setTitleColor(UIColor.darkGray, for: .disabled)
+            }
+        }
+    }
+    
+    fileprivate func addTextFieldTargets() {
+        fullNameTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
+        emailTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
+    }
+    
+    @objc func handleTextField(sender: UITextField) {
+        if sender == fullNameTextField {
+            registrationViewModel.name = sender.text
+        } else if sender == emailTextField {
+            registrationViewModel.email = sender.text
+        } else {
+            registrationViewModel.password = sender.text
+        }
     }
         
     fileprivate func setupTapGesture() {
