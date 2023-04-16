@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D8D94EC659CC320B3B7D7239 /* Pods_iOS_TInder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6466DE20C86C73C64C5CBF5 /* Pods_iOS_TInder.framework */; };
+		DC22A07429EBDAF000124517 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC22A07329EBDAF000124517 /* RegistrationController.swift */; };
+		DC22A07629EBDB8C00124517 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC22A07529EBDB8C00124517 /* CustomTextField.swift */; };
 		DC4DD9BF29E7A15C00562433 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9BE29E7A15C00562433 /* AppDelegate.swift */; };
 		DC4DD9C129E7A15C00562433 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9C029E7A15C00562433 /* SceneDelegate.swift */; };
 		DC4DD9C329E7A15C00562433 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9C229E7A15C00562433 /* MainViewController.swift */; };
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		C1EB017DA8E04DD44DC12390 /* Pods-iOS_TInder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS_TInder.release.xcconfig"; path = "Target Support Files/Pods-iOS_TInder/Pods-iOS_TInder.release.xcconfig"; sourceTree = "<group>"; };
 		D2E763F021D7E297A60CEDA5 /* Pods-iOS_TInder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS_TInder.debug.xcconfig"; path = "Target Support Files/Pods-iOS_TInder/Pods-iOS_TInder.debug.xcconfig"; sourceTree = "<group>"; };
+		DC22A07329EBDAF000124517 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
+		DC22A07529EBDB8C00124517 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		DC4DD9BB29E7A15C00562433 /* iOS_TInder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_TInder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC4DD9BE29E7A15C00562433 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC4DD9C029E7A15C00562433 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +123,7 @@
 				DC4DD9D429E7AAB700562433 /* TopNavigationStackView.swift */,
 				DC4DD9D629E7AAEA00562433 /* HomeBottomControlsStackView.swift */,
 				DC4DD9D829E7B92500562433 /* CardView.swift */,
+				DC22A07529EBDB8C00124517 /* CustomTextField.swift */,
 				DCBA41B329E90BCA0051F2A8 /* Controller */,
 			);
 			path = View;
@@ -128,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				DC4DD9C229E7A15C00562433 /* MainViewController.swift */,
+				DC22A07329EBDAF000124517 /* RegistrationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -265,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC4DD9C329E7A15C00562433 /* MainViewController.swift in Sources */,
+				DC22A07629EBDB8C00124517 /* CustomTextField.swift in Sources */,
 				DC4DD9BF29E7A15C00562433 /* AppDelegate.swift in Sources */,
 				DC5F5DA829E9A3E2003C498C /* Advertiser.swift in Sources */,
 				DC4DD9D729E7AAEA00562433 /* HomeBottomControlsStackView.swift in Sources */,
@@ -272,6 +279,7 @@
 				DCBA41B929E90CEC0051F2A8 /* CardViewModel.swift in Sources */,
 				DC4DD9D929E7B92500562433 /* CardView.swift in Sources */,
 				DC4DD9D529E7AAB700562433 /* TopNavigationStackView.swift in Sources */,
+				DC22A07429EBDAF000124517 /* RegistrationController.swift in Sources */,
 				DCBA41B729E90BEA0051F2A8 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

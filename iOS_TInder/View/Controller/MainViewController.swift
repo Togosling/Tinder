@@ -31,6 +31,13 @@ class MainViewController: UIViewController {
         
         setupViews()
         setupDummyCards()
+        topStackView.profileButton.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
+    }
+    
+    @objc func handleRegistration() {
+        let registrationController = RegistrationController()
+        registrationController.modalPresentationStyle = .fullScreen
+        present(registrationController, animated: true)
     }
     
     fileprivate func setupDummyCards() {
