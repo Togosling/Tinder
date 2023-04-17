@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import FirebaseAuth
+import JGProgressHUD
 
 
 class RegistrationController: UIViewController {
@@ -68,7 +70,7 @@ class RegistrationController: UIViewController {
         setupLayout()
         setupNotificationObservers()
         setupTapGesture()
-        addTextFieldTargets()
+        addTargets()
         validFromObserver()
     }
         
@@ -86,10 +88,33 @@ class RegistrationController: UIViewController {
         }
     }
     
-    fileprivate func addTextFieldTargets() {
+    fileprivate func addTargets() {
         fullNameTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
         emailTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
+        registerButton.addTarget(self, action: #selector(handleRegistrtion), for: .touchUpInside)
+    }
+    
+    @objc func handleRegistrtion() {
+        self.handleTapDismiss()
+        guard let emailText = emailTextField.text else {return}
+        guard let passwordText = passwordTextField.text else {return}
+
+        Auth.auth().createUser(withEmail: emailText, password: passwordText) { resp, err in
+            
+            if let err = err {
+                self.showHUDWithError(error: err)
+            }
+            print("Succes", resp?.user.uid ?? "")
+        }
+    }
+    
+    fileprivate func showHUDWithError(error: Error) {
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Failed Registration"
+        hud.detailTextLabel.text = error.localizedDescription
+        hud.show(in: self.view)
+        hud.dismiss(afterDelay: 5)
     }
     
     @objc func handleTextField(sender: UITextField) {
