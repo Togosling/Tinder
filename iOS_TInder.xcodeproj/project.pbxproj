@@ -12,6 +12,7 @@
 		DC22A07629EBDB8C00124517 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC22A07529EBDB8C00124517 /* CustomTextField.swift */; };
 		DC22A07829EBE26900124517 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC22A07729EBE26900124517 /* RegistrationViewModel.swift */; };
 		DC291FBA29ECED3500161202 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC291FB929ECED3500161202 /* GoogleService-Info.plist */; };
+		DC2CEF8829ED057300A36DE5 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC2CEF8729ED057300A36DE5 /* Bindable.swift */; };
 		DC4DD9BF29E7A15C00562433 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9BE29E7A15C00562433 /* AppDelegate.swift */; };
 		DC4DD9C129E7A15C00562433 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9C029E7A15C00562433 /* SceneDelegate.swift */; };
 		DC4DD9C329E7A15C00562433 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4DD9C229E7A15C00562433 /* MainViewController.swift */; };
@@ -33,6 +34,7 @@
 		DC22A07529EBDB8C00124517 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		DC22A07729EBE26900124517 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		DC291FB929ECED3500161202 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		DC2CEF8729ED057300A36DE5 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		DC4DD9BB29E7A15C00562433 /* iOS_TInder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOS_TInder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC4DD9BE29E7A15C00562433 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DC4DD9C029E7A15C00562433 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			children = (
 				DCBA41B829E90CEC0051F2A8 /* CardViewModel.swift */,
 				DC22A07729EBE26900124517 /* RegistrationViewModel.swift */,
+				DC2CEF8729ED057300A36DE5 /* Bindable.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC2CEF8829ED057300A36DE5 /* Bindable.swift in Sources */,
 				DC4DD9C329E7A15C00562433 /* MainViewController.swift in Sources */,
 				DC22A07829EBE26900124517 /* RegistrationViewModel.swift in Sources */,
 				DC22A07629EBDB8C00124517 /* CustomTextField.swift in Sources */,

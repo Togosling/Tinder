@@ -22,6 +22,8 @@ class RegistrationController: UIViewController {
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
         button.layer.cornerRadius = 16
+        button.imageView?.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
         button.snp.makeConstraints { make in
             make.height.equalTo(275)
         }
@@ -75,7 +77,8 @@ class RegistrationController: UIViewController {
     }
         
     fileprivate func validFromObserver() {
-        registrationViewModel.formIsValid = {[weak self] formIsValid in
+        registrationViewModel.bindableFormIsValid.bind(observer: { [weak self] formIsValid in
+            guard let formIsValid = formIsValid else {return}
             if formIsValid {
                 self?.registerButton.isEnabled = true
                 self?.registerButton.backgroundColor = #colorLiteral(red: 0.8235294118, green: 0, blue: 0.3254901961, alpha: 1)
@@ -85,6 +88,9 @@ class RegistrationController: UIViewController {
                 self?.registerButton.backgroundColor = .lightGray
                 self?.registerButton.setTitleColor(UIColor.darkGray, for: .disabled)
             }
+        })
+        registrationViewModel.bindableImage.bind { [weak self] image in
+            self?.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     
@@ -93,6 +99,15 @@ class RegistrationController: UIViewController {
         emailTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
         registerButton.addTarget(self, action: #selector(handleRegistrtion), for: .touchUpInside)
+        selectPhotoButton.addTarget(self, action: #selector(handlePhoto), for: .touchUpInside)
+    }
+    
+    @objc func handlePhoto() {
+        
+        let photoPickerController = UIImagePickerController()
+        photoPickerController.modalPresentationStyle = .fullScreen
+        photoPickerController.delegate = self
+        present(photoPickerController, animated: true)
     }
     
     @objc func handleRegistrtion() {
@@ -191,5 +206,14 @@ class RegistrationController: UIViewController {
         gradientLayer.frame = view.bounds
     }
 
+}
+
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+        registrationViewModel.bindableImage.value = image
+        self.dismiss(animated: true)
+    }
 }
 
