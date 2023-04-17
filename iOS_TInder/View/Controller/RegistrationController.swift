@@ -64,6 +64,8 @@ class RegistrationController: UIViewController {
         }
         return button
     }()
+    
+    let registrationHud = JGProgressHUD(style: .dark)
             
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,10 +75,10 @@ class RegistrationController: UIViewController {
         setupNotificationObservers()
         setupTapGesture()
         addTargets()
-        validFromObserver()
+        registrationViewModelObservers()
     }
         
-    fileprivate func validFromObserver() {
+    fileprivate func registrationViewModelObservers() {
         registrationViewModel.bindableFormIsValid.bind(observer: { [weak self] formIsValid in
             guard let formIsValid = formIsValid else {return}
             if formIsValid {
@@ -91,6 +93,15 @@ class RegistrationController: UIViewController {
         })
         registrationViewModel.bindableImage.bind { [weak self] image in
             self?.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+        
+        registrationViewModel.bindableIsRegistering.bind { [unowned self] (isRegistering) in
+            if isRegistering == true {
+                self.registrationHud.textLabel.text = "Register"
+                self.registrationHud.show(in: self.view)
+            } else {
+                self.registrationHud.dismiss()
+            }
         }
     }
     
@@ -112,16 +123,15 @@ class RegistrationController: UIViewController {
     
     @objc func handleRegistrtion() {
         self.handleTapDismiss()
-        guard let emailText = emailTextField.text else {return}
-        guard let passwordText = passwordTextField.text else {return}
-
-        Auth.auth().createUser(withEmail: emailText, password: passwordText) { resp, err in
+        registrationViewModel.performRegistration { [weak self] err in
             
             if let err = err {
-                self.showHUDWithError(error: err)
+                self?.showHUDWithError(error: err)
+                return
             }
-            print("Succes", resp?.user.uid ?? "")
+            print("Finished registering our user")
         }
+        
     }
     
     fileprivate func showHUDWithError(error: Error) {
@@ -157,7 +167,7 @@ class RegistrationController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self) 
+//        NotificationCenter.default.removeObserver(self)
     }
     
     @objc fileprivate func handleKeyboardHide() {

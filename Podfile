@@ -9,6 +9,7 @@ target 'iOS_TInder' do
   pod 'SnapKit'
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
+  pod 'FirebaseStorage'
   pod 'SDWebImage'
   pod 'JGProgressHUD'
 
