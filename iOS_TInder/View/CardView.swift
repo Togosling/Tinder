@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 
 class CardView: UIView {
@@ -14,10 +15,11 @@ class CardView: UIView {
     var cardViewModel: CardViewModel! {
         didSet {
             descriptionLabel.attributedText = cardViewModel.attributedString
-            imageView.image = UIImage(named:cardViewModel.imageNames.first ?? "")
+            let url = URL(string: cardViewModel.imageUrls.first ?? "")
+            imageView.sd_setImage(with: url)
             descriptionLabel.textAlignment = cardViewModel.textAlignment
             
-            (0 ..< cardViewModel.imageNames.count).forEach { (_) in
+            (0 ..< cardViewModel.imageUrls.count).forEach { (_) in
                 let barView = UIView()
                 barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
                 barView.layer.cornerRadius = 4
@@ -25,8 +27,8 @@ class CardView: UIView {
             }
             barStackView.arrangedSubviews.first?.backgroundColor = .white
             
-            cardViewModel.imageIndexObserver = {[weak self] (image, index) in
-                self?.imageView.image = image
+            cardViewModel.imageIndexObserver = {[weak self] (imageUrl, index) in
+                self?.imageView.sd_setImage(with: URL(string: imageUrl ?? ""))
                 self?.barStackView.arrangedSubviews.forEach { iv in
                     iv.backgroundColor = UIColor(white: 0, alpha: 0.1)
                 }

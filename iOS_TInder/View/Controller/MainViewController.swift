@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import FirebaseFirestore
 
 class MainViewController: UIViewController {
     
@@ -14,23 +15,35 @@ class MainViewController: UIViewController {
     let cardsDeckView = UIView()
     let bottomStackView = HomeBottomControlsStackView()
     
-    let cardViewModels: [CardViewModel] = {
-        let producers = [
-            User(name: "Kelly", age: "23", profession: "Music DJ", imageNames: ["kelly1","kelly2","kelly3"]),
-            User(name: "Jane", age: "18", profession: "Teacher", imageNames: ["jane1","jane2","jane3"]),
-            Advertiser(title: "Slide Out Menu", brandName: "Lets Build That App", posterPhotoNames: ["slide_out_menu_poster"])
-        ] as [ProducesCardViewModel]
-        
-        let viewModels = producers.map({return $0.toCardViewModel()})
-        return viewModels
-    }()
-
+    var cardViewModels = [CardViewModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         setupViews()
-        setupDummyCards()
+        setupFirestoreUserCardView()
+        addTargets()
+        fetchDataFrommFirestore()
+    }
+    
+    fileprivate func fetchDataFrommFirestore() {
+        Firestore.firestore().collection("users").getDocuments {snapShot, err in
+            if let err = err {
+                print(err)
+                return
+            }
+            snapShot?.documents.forEach({ docSnapShot in
+                let userDictionary = docSnapShot.data()
+                let user = User(documents: userDictionary)
+                self.cardViewModels.append(user.toCardViewModel())
+            })
+            self.setupFirestoreUserCardView()
+        }
+    }
+
+    
+    fileprivate func addTargets() {
         topStackView.profileButton.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
     }
     
@@ -40,7 +53,7 @@ class MainViewController: UIViewController {
         present(registrationController, animated: true)
     }
     
-    fileprivate func setupDummyCards() {
+    fileprivate func setupFirestoreUserCardView() {
         
         for cardViewModel in cardViewModels {
             let cardView = CardView(frame: .zero)

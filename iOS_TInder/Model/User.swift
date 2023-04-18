@@ -11,16 +11,23 @@ import UIKit
 
 struct User: ProducesCardViewModel {
     
-    let name: String
-    let age: String
-    let profession: String
-    let imageNames: [String]
+    var name: String?
+    var age: String?
+    var profession: String?
+    var imageUrl1: String?
+    
+    init(documents: [String:Any]) {
+        self.name = documents["fullName"] as? String
+        self.age = documents["age"] as? String
+        self.profession = documents["profession"] as? String
+        self.imageUrl1 = documents["imageUrl1"] as? String
+    }
     
     func toCardViewModel() -> CardViewModel{
-        let attributedText = NSMutableAttributedString(string: name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
-        attributedText.append(NSAttributedString(string: "  \(age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
-        attributedText.append(NSAttributedString(string: "\n\(profession)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
+        let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
+        attributedText.append(NSAttributedString(string: "  \(age ?? "")", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
+        attributedText.append(NSAttributedString(string: "\n\(profession ?? "")", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
 
-        return CardViewModel(imageNames: imageNames, attributedString: attributedText, textAlignment: .left)
+        return CardViewModel(imageNames: [imageUrl1 ?? ""], attributedString: attributedText, textAlignment: .left)
     }
 }
