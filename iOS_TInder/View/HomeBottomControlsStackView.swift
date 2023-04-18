@@ -11,6 +11,20 @@ import SnapKit
 
 class HomeBottomControlsStackView: UIStackView {
     
+    static func createButton(image: UIImage) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFill
+        return button
+    }
+    
+    let refreshButton = createButton(image: #imageLiteral(resourceName: "refresh"))
+    let dislikeButton = createButton(image: #imageLiteral(resourceName: "cancel"))
+    let superLikeButton = createButton(image: #imageLiteral(resourceName: "star"))
+    let likeButton = createButton(image: #imageLiteral(resourceName: "heart"))
+    let specialButton = createButton(image: #imageLiteral(resourceName: "Lighting"))
+
+    
     override init(frame: CGRect) {
         super .init(frame: frame)
         
@@ -18,19 +32,11 @@ class HomeBottomControlsStackView: UIStackView {
             make.height.equalTo(120)
         }
         backgroundColor = .white
-        
         distribution = .fillEqually
         
-        let subViews = [UIImage(named: "refresh"),UIImage(named: "cancel"),UIImage(named: "star"),UIImage(named: "heart"),UIImage(named: "Lighting"),].map {
-            (img) -> UIView in
-            let button = UIButton(type: .system)
-            button.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
-            return button
+        [refreshButton, dislikeButton, superLikeButton, likeButton, specialButton].forEach { (button) in
+            self.addArrangedSubview(button)
         }
-        subViews.forEach { iv in
-            addArrangedSubview(iv)
-        }
-        
     }
     
     required init(coder: NSCoder) {

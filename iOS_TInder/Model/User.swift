@@ -15,12 +15,14 @@ struct User: ProducesCardViewModel {
     var age: String?
     var profession: String?
     var imageUrl1: String?
+    var uid: String?
     
     init(documents: [String:Any]) {
         self.name = documents["fullName"] as? String
         self.age = documents["age"] as? String
         self.profession = documents["profession"] as? String
         self.imageUrl1 = documents["imageUrl1"] as? String
+        self.uid = documents["uid"] as? String
     }
     
     func toCardViewModel() -> CardViewModel{
