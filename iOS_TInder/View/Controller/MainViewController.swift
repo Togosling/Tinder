@@ -68,9 +68,10 @@ class MainViewController: UIViewController {
     }
     
     @objc func handleRegistration() {
-        let registrationController = RegistrationController()
-        registrationController.modalPresentationStyle = .fullScreen
-        present(registrationController, animated: true)
+        let settingsController = SettingsController()
+        let navSettingsController = UINavigationController(rootViewController: settingsController)
+        navSettingsController.modalPresentationStyle = .fullScreen
+        present(navSettingsController, animated: true)
     }
     
 //    fileprivate func setupUserCardView() {

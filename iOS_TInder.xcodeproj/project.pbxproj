@@ -25,6 +25,7 @@
 		DC5F5DA829E9A3E2003C498C /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC5F5DA729E9A3E2003C498C /* Advertiser.swift */; };
 		DCBA41B729E90BEA0051F2A8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBA41B629E90BEA0051F2A8 /* User.swift */; };
 		DCBA41B929E90CEC0051F2A8 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBA41B829E90CEC0051F2A8 /* CardViewModel.swift */; };
+		DCEBBCD129EE7308001D9173 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEBBCD029EE7308001D9173 /* SettingsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 		DC5F5DA729E9A3E2003C498C /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		DCBA41B629E90BEA0051F2A8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DCBA41B829E90CEC0051F2A8 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
+		DCEBBCD029EE7308001D9173 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		E6466DE20C86C73C64C5CBF5 /* Pods_iOS_TInder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_TInder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -141,6 +143,7 @@
 			children = (
 				DC4DD9C229E7A15C00562433 /* MainViewController.swift */,
 				DC22A07329EBDAF000124517 /* RegistrationController.swift */,
+				DCEBBCD029EE7308001D9173 /* SettingsController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 				DC4DD9C129E7A15C00562433 /* SceneDelegate.swift in Sources */,
 				DCBA41B929E90CEC0051F2A8 /* CardViewModel.swift in Sources */,
 				DC4DD9D929E7B92500562433 /* CardView.swift in Sources */,
+				DCEBBCD129EE7308001D9173 /* SettingsController.swift in Sources */,
 				DC4DD9D529E7AAB700562433 /* TopNavigationStackView.swift in Sources */,
 				DC22A07429EBDAF000124517 /* RegistrationController.swift in Sources */,
 				DCBA41B729E90BEA0051F2A8 /* User.swift in Sources */,
