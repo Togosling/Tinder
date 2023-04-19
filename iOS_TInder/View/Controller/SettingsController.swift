@@ -7,6 +7,10 @@
 
 import UIKit
 import SnapKit
+import FirebaseFirestore
+import FirebaseAuth
+import JGProgressHUD
+import SDWebImage
 
 class CustomUIImagePickerController: UIImagePickerController {
     var imageButton: UIButton?
@@ -43,6 +47,8 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         return header
     }()
     
+    var user: User?
+    
     class HeaderLabel: UILabel {
         override func drawText(in rect: CGRect) {
             super.drawText(in: rect.insetBy(dx: 16, dy: 0))
@@ -54,6 +60,28 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         tableView.backgroundColor = UIColor(white: 0.9, alpha: 1)
         setupNavSettings()
         tableView.keyboardDismissMode = .interactive
+        fetchDataForUser()
+    }
+    
+    fileprivate func fetchDataForUser() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { snapShot, err in
+            if let err = err {
+                print(err)
+                return
+            }
+            guard let dictionary = snapShot?.data() else {return}
+            self.user = User(documents: dictionary)
+            self.loadUserPhotos()
+            self.tableView.reloadData()
+        }
+    }
+    
+    fileprivate func loadUserPhotos() {
+        guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else {return}
+        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            self.imageButton1.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -91,14 +119,25 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return section == 0 ? 0 : 1
     }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SettingsCell(style: .default, reuseIdentifier: "cellId")
+        cell.contentView.isUserInteractionEnabled = false
         switch indexPath.section {
         case 1:
             cell.textField.placeholder = "Enter Name"
+            cell.textField.text = user?.name
         case 2:
             cell.textField.placeholder = "Enter Profession"
+            cell.textField.text = user?.profession
         case 3:
+            if let age = user?.age {
+                cell.textField.placeholder = age
+            }
             cell.textField.placeholder = "Enter Age"
         default:
             cell.textField.placeholder = "Enter Bio"

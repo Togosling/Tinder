@@ -13,10 +13,6 @@ class SettingsCell: UITableViewCell {
     
     class CustomTextField: UITextField {
         
-        override var intrinsicContentSize: CGSize{
-            return .init(width: 0, height: 50)
-        }
-        
         override func textRect(forBounds bounds: CGRect) -> CGRect {
             super.textRect(forBounds: bounds.insetBy(dx: 16, dy: 0))
         }
@@ -34,6 +30,7 @@ class SettingsCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super .init(style: style, reuseIdentifier: reuseIdentifier)
+        
         
         addSubview(textField)
         textField.snp.makeConstraints { make in
