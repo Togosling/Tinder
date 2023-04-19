@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseStorage
 import JGProgressHUD
 import SDWebImage
 
@@ -78,9 +79,20 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     fileprivate func loadUserPhotos() {
-        guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else {return}
-        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
-            self.imageButton1.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl){
+            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.imageButton1.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl){
+            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.imageButton2.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl){
+            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+                self.imageButton3.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
     }
     
@@ -178,10 +190,38 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let selectedImage = info[.originalImage] as? UIImage
-        (picker as? CustomUIImagePickerController)?.imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
-        dismiss(animated: true)
+        guard let imageButton =  (picker as? CustomUIImagePickerController)?.imageButton else {return}
+        imageButton.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        let fileName = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(fileName)")
+        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else {return}
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Uploading Image"
+        hud.show(in: view)
+        ref.putData(uploadData, metadata: nil, completion: { (_, err) in
+            
+            if let err = err {
+                print(err)
+                return
+            }
+            ref.downloadURL { url, err in
+                hud.dismiss(animated: true)
+                if let err = err {
+                    print(err)
+                    return
+                }
+                if imageButton == self.imageButton1 {
+                    self.user?.imageUrl1 = url?.absoluteString
+                } else if imageButton == self.imageButton2 {
+                    self.user?.imageUrl2 = url?.absoluteString
+                } else {
+                    self.user?.imageUrl3 = url?.absoluteString
+                }
+            }
+        })
     }
-    
+                    
     fileprivate func setupNavSettings() {
         navigationItem.title = "Settings"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -202,7 +242,9 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             "fullName": user?.name ?? "",
             "profession": user?.profession ?? "",
             "age": user?.age ?? "",
-            "imageUrl1": user?.imageUrl1 ?? ""
+            "imageUrl1": user?.imageUrl1 ?? "",
+            "imageUrl2": user?.imageUrl2 ?? "",
+            "imageUrl3": user?.imageUrl3 ?? ""
         ]
         Firestore.firestore().collection("users").document(uid).setData(docData) { err in
             hud.dismiss(animated: true)

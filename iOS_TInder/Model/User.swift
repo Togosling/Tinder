@@ -15,6 +15,8 @@ struct User: ProducesCardViewModel {
     var age: String?
     var profession: String?
     var imageUrl1: String?
+    var imageUrl2: String?
+    var imageUrl3: String?
     var uid: String?
     
     init(documents: [String:Any]) {
@@ -22,6 +24,8 @@ struct User: ProducesCardViewModel {
         self.age = documents["age"] as? String
         self.profession = documents["profession"] as? String
         self.imageUrl1 = documents["imageUrl1"] as? String
+        self.imageUrl2 = documents["imageUrl2"] as? String
+        self.imageUrl3 = documents["imageUrl3"] as? String
         self.uid = documents["uid"] as? String
     }
     
@@ -29,7 +33,18 @@ struct User: ProducesCardViewModel {
         let attributedText = NSMutableAttributedString(string: name ?? "", attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
         attributedText.append(NSAttributedString(string: "  \(age ?? "")", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .regular)]))
         attributedText.append(NSAttributedString(string: "\n\(profession ?? "")", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .regular)]))
+        
+        var imageUrls = [String]()
+        if let imageUrl = imageUrl1 {
+            imageUrls.append(imageUrl)
+        }
+        if let imageUrl = imageUrl2 {
+            imageUrls.append(imageUrl)
+        }
+        if let imageUrl = imageUrl3 {
+            imageUrls.append(imageUrl)
+        }
 
-        return CardViewModel(imageNames: [imageUrl1 ?? ""], attributedString: attributedText, textAlignment: .left)
+        return CardViewModel(imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     }
 }
