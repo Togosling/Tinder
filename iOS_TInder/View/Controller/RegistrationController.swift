@@ -13,6 +13,8 @@ import JGProgressHUD
 
 class RegistrationController: UIViewController {
     
+    var delegate: LoginControllerDelegate?
+    
     let registrationViewModel = RegistrationViewModel()
     
     let selectPhotoButton: UIButton = {
@@ -66,7 +68,15 @@ class RegistrationController: UIViewController {
     }()
     
     let registrationHud = JGProgressHUD(style: .dark)
-            
+    
+    let goToLoginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Go to Login", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -111,6 +121,13 @@ class RegistrationController: UIViewController {
         passwordTextField.addTarget(self, action: #selector(handleTextField), for: .editingChanged)
         registerButton.addTarget(self, action: #selector(handleRegistrtion), for: .touchUpInside)
         selectPhotoButton.addTarget(self, action: #selector(handlePhoto), for: .touchUpInside)
+        goToLoginButton.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
+    }
+    
+    @objc fileprivate func handleGoToLogin() {
+        let loginController = LoginController()
+        loginController.delegate = delegate
+        navigationController?.pushViewController(loginController, animated: true)
     }
     
     @objc func handlePhoto() {
@@ -202,6 +219,11 @@ class RegistrationController: UIViewController {
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(50)
             make.trailing.equalToSuperview().offset(-50)
+        }
+        view.addSubview(goToLoginButton)
+        goToLoginButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-40)
         }
     }
     

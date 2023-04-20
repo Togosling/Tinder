@@ -28,6 +28,8 @@
 		DCC845FF29EF8EF800ECB349 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC845FE29EF8EF800ECB349 /* SettingsCell.swift */; };
 		DCEBBCD129EE7308001D9173 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCEBBCD029EE7308001D9173 /* SettingsController.swift */; };
 		DCFDDA7929F0E1410057B7DB /* AgeSeekingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFDDA7829F0E1410057B7DB /* AgeSeekingCell.swift */; };
+		DCFDDA7B29F101990057B7DB /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFDDA7A29F101990057B7DB /* LoginController.swift */; };
+		DCFDDA7D29F101B20057B7DB /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCFDDA7C29F101B20057B7DB /* LoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,8 @@
 		DCC845FE29EF8EF800ECB349 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		DCEBBCD029EE7308001D9173 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		DCFDDA7829F0E1410057B7DB /* AgeSeekingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeSeekingCell.swift; sourceTree = "<group>"; };
+		DCFDDA7A29F101990057B7DB /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
+		DCFDDA7C29F101B20057B7DB /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E6466DE20C86C73C64C5CBF5 /* Pods_iOS_TInder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_TInder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -150,6 +154,7 @@
 				DC4DD9C229E7A15C00562433 /* MainViewController.swift */,
 				DC22A07329EBDAF000124517 /* RegistrationController.swift */,
 				DCEBBCD029EE7308001D9173 /* SettingsController.swift */,
+				DCFDDA7A29F101990057B7DB /* LoginController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 				DCBA41B829E90CEC0051F2A8 /* CardViewModel.swift */,
 				DC22A07729EBE26900124517 /* RegistrationViewModel.swift */,
 				DC2CEF8729ED057300A36DE5 /* Bindable.swift */,
+				DCFDDA7C29F101B20057B7DB /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -297,9 +303,11 @@
 				DC4DD9BF29E7A15C00562433 /* AppDelegate.swift in Sources */,
 				DC5F5DA829E9A3E2003C498C /* Advertiser.swift in Sources */,
 				DC4DD9D729E7AAEA00562433 /* HomeBottomControlsStackView.swift in Sources */,
+				DCFDDA7D29F101B20057B7DB /* LoginViewModel.swift in Sources */,
 				DC4DD9C129E7A15C00562433 /* SceneDelegate.swift in Sources */,
 				DCBA41B929E90CEC0051F2A8 /* CardViewModel.swift in Sources */,
 				DC4DD9D929E7B92500562433 /* CardView.swift in Sources */,
+				DCFDDA7B29F101990057B7DB /* LoginController.swift in Sources */,
 				DCEBBCD129EE7308001D9173 /* SettingsController.swift in Sources */,
 				DC4DD9D529E7AAB700562433 /* TopNavigationStackView.swift in Sources */,
 				DC22A07429EBDAF000124517 /* RegistrationController.swift in Sources */,

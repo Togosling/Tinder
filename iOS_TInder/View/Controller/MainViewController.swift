@@ -11,13 +11,14 @@ import FirebaseFirestore
 import FirebaseAuth
 import JGProgressHUD
 
-class MainViewController: UIViewController, SettingsControllerDelegate {
+class MainViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControlls = HomeBottomControlsStackView()
     var lastUser: User?
     var currentUser: User?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -25,6 +26,18 @@ class MainViewController: UIViewController, SettingsControllerDelegate {
         setupViews()
         addTargets()
         fetchUserData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super .viewDidAppear(animated)
+        
+        if Auth.auth().currentUser == nil {
+            let registrationController = RegistrationController()
+            registrationController.delegate = self
+            let navController = UINavigationController(rootViewController: registrationController)
+            navController.modalPresentationStyle = .fullScreen
+            present(navController, animated: true)
+        }
     }
     
     fileprivate func fetchUserData() {
@@ -45,7 +58,8 @@ class MainViewController: UIViewController, SettingsControllerDelegate {
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Looking for Users"
         hud.show(in: view)
-        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThan: currentUser?.minSeekingAge ?? 18).whereField("age", isLessThan: currentUser?.maxSeekingAge ?? 100)
+        guard let minAge = currentUser?.minSeekingAge, let maxAge = currentUser?.maxSeekingAge else {return}
+        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThan: minAge).whereField("age", isLessThan: maxAge)
         query.getDocuments {snapShot, err in
             hud.dismiss(animated: true)
             if let err = err {
@@ -88,6 +102,10 @@ class MainViewController: UIViewController, SettingsControllerDelegate {
     }
     
     func didSaveSettings() {
+        fetchUserData()
+    }
+    
+    func didFinishLoggingIn() {
         fetchUserData()
     }
     

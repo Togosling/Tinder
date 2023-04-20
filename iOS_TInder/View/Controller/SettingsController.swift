@@ -147,10 +147,10 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             cell.contentView.isUserInteractionEnabled = false
             cell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
             cell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
-            cell.minLabel.text = "Min \(user?.minSeekingAge ?? "18")"
-            cell.maxLabel.text = "Max \(user?.maxSeekingAge ?? "100")"
-            cell.minSlider.value = Float(user?.minSeekingAge ?? "") ?? 18
-            cell.maxSlider.value = Float(user?.maxSeekingAge ?? "") ?? 100
+            cell.minLabel.text = "Min \(user?.minSeekingAge ?? -1)"
+            cell.maxLabel.text = "Max \(user?.maxSeekingAge ?? -1)"
+            cell.minSlider.value = Float(user?.minSeekingAge ?? -1)
+            cell.maxSlider.value = Float(user?.maxSeekingAge ?? -1)
             return cell
         }
         let cell = SettingsCell(style: .default, reuseIdentifier: "cellId")
@@ -166,7 +166,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             cell.textField.addTarget(self, action: #selector(handleProfessionEditing), for: .editingChanged)
         case 3:
             if let age = user?.age {
-                cell.textField.text = age
+                cell.textField.text = String(Int(age))
             }
             cell.textField.placeholder = "Enter Age"
             cell.textField.addTarget(self, action: #selector(handleAgeEditing), for: .editingChanged)
@@ -181,7 +181,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         guard let ageRangeCell = tableView.cellForRow(at: indexPath) as? AgeSeekingCell else {return}
         ageRangeCell.minLabel.text = "Min \(Int(slider.value))"
         
-        self.user?.minSeekingAge = String(Int(slider.value))
+        self.user?.minSeekingAge = Int(slider.value)
     }
     
     @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
@@ -189,7 +189,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         guard let ageRangeCell = tableView.cellForRow(at: indexPath) as? AgeSeekingCell else {return}
         ageRangeCell.maxLabel.text = "Max \(Int(slider.value))"
         
-        self.user?.maxSeekingAge = String(Int(slider.value))
+        self.user?.maxSeekingAge = Int(slider.value)
     }
     
     @objc fileprivate func handleNameEditing(textField: UITextField) {
@@ -199,7 +199,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         self.user?.profession = textField.text
     }
     @objc fileprivate func handleAgeEditing(textField: UITextField) {
-        self.user?.age = textField.text
+        self.user?.age = Int(textField.text ?? "")
     }
     
     fileprivate func createButton() -> UIButton {
@@ -259,9 +259,14 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleCancel)),
+            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout)),
             UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave))
         ]
+    }
+    
+    @objc fileprivate func handleLogout() {
+        try? Auth.auth().signOut()
+        dismiss(animated: true)
     }
     
     @objc fileprivate func handleSave() {
