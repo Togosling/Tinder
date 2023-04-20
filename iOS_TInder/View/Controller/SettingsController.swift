@@ -111,8 +111,11 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         case 3:
             headerLabel.text = "Age"
             return headerLabel
-        default:
+        case 4:
             headerLabel.text = "Bio"
+            return headerLabel
+        default:
+            headerLabel.text = "Seeking Age"
             return headerLabel
         }
     }
@@ -125,18 +128,26 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return section == 0 ? 0 : 1
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 5 {
+            let cell = AgeSeekingCell(style: .default, reuseIdentifier: nil)
+            cell.contentView.isUserInteractionEnabled = false
+            cell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
+            cell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
+            cell.minLabel.text = "Min \(user?.minSeekingAge ?? "18")"
+            cell.maxLabel.text = "Max \(user?.maxSeekingAge ?? "100")"
+            cell.minSlider.value = Float(user?.minSeekingAge ?? "") ?? 18
+            cell.maxSlider.value = Float(user?.maxSeekingAge ?? "") ?? 100
+            return cell
+        }
         let cell = SettingsCell(style: .default, reuseIdentifier: "cellId")
         cell.contentView.isUserInteractionEnabled = false
         switch indexPath.section {
@@ -158,6 +169,22 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             cell.textField.placeholder = "Enter Bio"
         }
         return cell
+    }
+    
+    @objc fileprivate func handleMinAgeChange(slider: UISlider) {
+        let indexPath = IndexPath(row: 0, section: 5)
+        guard let ageRangeCell = tableView.cellForRow(at: indexPath) as? AgeSeekingCell else {return}
+        ageRangeCell.minLabel.text = "Min \(Int(slider.value))"
+        
+        self.user?.minSeekingAge = String(Int(slider.value))
+    }
+    
+    @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
+        let indexPath = IndexPath(row: 0, section: 5)
+        guard let ageRangeCell = tableView.cellForRow(at: indexPath) as? AgeSeekingCell else {return}
+        ageRangeCell.maxLabel.text = "Max \(Int(slider.value))"
+        
+        self.user?.maxSeekingAge = String(Int(slider.value))
     }
     
     @objc fileprivate func handleNameEditing(textField: UITextField) {
@@ -244,7 +271,9 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             "age": user?.age ?? "",
             "imageUrl1": user?.imageUrl1 ?? "",
             "imageUrl2": user?.imageUrl2 ?? "",
-            "imageUrl3": user?.imageUrl3 ?? ""
+            "imageUrl3": user?.imageUrl3 ?? "",
+            "minSeekingAge": user?.minSeekingAge ?? "",
+            "maxSeekingAge": user?.maxSeekingAge ?? ""
         ]
         Firestore.firestore().collection("users").document(uid).setData(docData) { err in
             hud.dismiss(animated: true)

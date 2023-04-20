@@ -18,6 +18,8 @@ struct User: ProducesCardViewModel {
     var imageUrl2: String?
     var imageUrl3: String?
     var uid: String?
+    var minSeekingAge: String?
+    var maxSeekingAge: String?
     
     init(documents: [String:Any]) {
         self.name = documents["fullName"] as? String
@@ -27,6 +29,8 @@ struct User: ProducesCardViewModel {
         self.imageUrl2 = documents["imageUrl2"] as? String
         self.imageUrl3 = documents["imageUrl3"] as? String
         self.uid = documents["uid"] as? String
+        self.minSeekingAge = documents["minSeekingAge"] as? String
+        self.maxSeekingAge = documents["maxSeekingAge"] as? String
     }
     
     func toCardViewModel() -> CardViewModel{

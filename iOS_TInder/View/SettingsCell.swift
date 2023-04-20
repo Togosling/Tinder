@@ -35,6 +35,7 @@ class SettingsCell: UITableViewCell {
         addSubview(textField)
         textField.snp.makeConstraints { make in
             make.size.equalToSuperview()
+            make.height.equalTo(45)
         }
         
     }
