@@ -11,12 +11,11 @@ import FirebaseFirestore
 import FirebaseAuth
 import JGProgressHUD
 
-class MainViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
-    
+class MainViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
+        
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControlls = HomeBottomControlsStackView()
-    var lastUser: User?
     var currentUser: User?
     
     override func viewDidLoad() {
@@ -69,14 +68,16 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
             snapShot?.documents.forEach({ docSnapShot in
                 let userDictionary = docSnapShot.data()
                 let user = User(documents: userDictionary)
-                self.lastUser = user
-                self.setupFirestoreUserCardView(user: user)
+                if user.uid != Auth.auth().currentUser?.uid {
+                    self.setupFirestoreUserCardView(user: user)
+                }
             })
         }
     }
     
     fileprivate func setupFirestoreUserCardView(user: User) {
         let cardView = CardView(frame: .zero)
+        cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
@@ -109,6 +110,11 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
         fetchUserData()
     }
     
+    func didTapMoreInfo() {
+        let moreDetailsController = MoreDetailsController()
+        moreDetailsController.modalPresentationStyle = .fullScreen
+        present(moreDetailsController, animated: true)
+    }
     fileprivate func setupViews() {
         
         let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomControlls])

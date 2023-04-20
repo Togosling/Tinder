@@ -9,8 +9,13 @@ import UIKit
 import SnapKit
 import SDWebImage
 
+protocol CardViewDelegate {
+    func didTapMoreInfo()
+}
 
 class CardView: UIView {
+    
+    var delegate: CardViewDelegate?
     
     var cardViewModel: CardViewModel! {
         didSet {
@@ -53,6 +58,12 @@ class CardView: UIView {
     let threshold: CGFloat = 80
     
     let barStackView = UIStackView()
+    
+    let moreInfoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named:"moreInfo")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        return button
+    }()
         
     override init(frame: CGRect) {
         super .init(frame: frame)
@@ -64,6 +75,11 @@ class CardView: UIView {
         setupPanGesture()
         setupTapGesture()
         
+        moreInfoButton.addTarget(self, action: #selector(handleMoreInfo), for: .touchUpInside)
+    }
+    
+    @objc fileprivate func handleMoreInfo() {
+        self.delegate?.didTapMoreInfo()
     }
     
     override func layoutSubviews() {
@@ -159,6 +175,13 @@ class CardView: UIView {
             make.bottom.equalToSuperview().offset(-16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
+        }
+        addSubview(moreInfoButton)
+        moreInfoButton.snp.makeConstraints { make in
+            make.width.equalTo(50)
+            make.height.equalTo(50)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-16)
         }
     }
     
