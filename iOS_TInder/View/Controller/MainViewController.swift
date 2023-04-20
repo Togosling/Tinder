@@ -8,31 +8,44 @@
 import UIKit
 import SnapKit
 import FirebaseFirestore
+import FirebaseAuth
 import JGProgressHUD
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, SettingsControllerDelegate {
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControlls = HomeBottomControlsStackView()
-//    var cardViewModels = [CardViewModel]()
     var lastUser: User?
-    
+    var currentUser: User?
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         
         setupViews()
-//        setupFirestoreUserCardView()
         addTargets()
-        fetchDataFromFirestore()
+        fetchUserData()
+    }
+    
+    fileprivate func fetchUserData() {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        Firestore.firestore().collection("users").document(uid).getDocument { snapShot, err in
+            if let err = err {
+                print(err)
+                return
+            }
+            guard let dictionary = snapShot?.data() else {return}
+            self.currentUser = User(documents: dictionary)
+            self.fetchDataFromFirestore()
+
+        }
     }
     
     fileprivate func fetchDataFromFirestore() {
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Looking for Users"
         hud.show(in: view)
-        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastUser?.uid ?? ""]).limit(to: 2)
+        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThan: currentUser?.minSeekingAge ?? 18).whereField("age", isLessThan: currentUser?.maxSeekingAge ?? 100)
         query.getDocuments {snapShot, err in
             hud.dismiss(animated: true)
             if let err = err {
@@ -42,7 +55,6 @@ class MainViewController: UIViewController {
             snapShot?.documents.forEach({ docSnapShot in
                 let userDictionary = docSnapShot.data()
                 let user = User(documents: userDictionary)
-//                self.cardViewModels.append(user.toCardViewModel())
                 self.lastUser = user
                 self.setupFirestoreUserCardView(user: user)
             })
@@ -69,22 +81,15 @@ class MainViewController: UIViewController {
     
     @objc func handleRegistration() {
         let settingsController = SettingsController()
+        settingsController.delegate = self
         let navSettingsController = UINavigationController(rootViewController: settingsController)
         navSettingsController.modalPresentationStyle = .fullScreen
         present(navSettingsController, animated: true)
     }
     
-//    fileprivate func setupUserCardView() {
-//
-//        for cardViewModel in cardViewModels {
-//            let cardView = CardView(frame: .zero)
-//            cardView.cardViewModel = cardViewModel
-//            cardsDeckView.addSubview(cardView)
-//            cardView.snp.makeConstraints { make in
-//                make.size.equalToSuperview()
-//            }
-//        }
-//    }
+    func didSaveSettings() {
+        fetchUserData()
+    }
     
     fileprivate func setupViews() {
         

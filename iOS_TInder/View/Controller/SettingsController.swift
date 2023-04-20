@@ -13,12 +13,17 @@ import FirebaseStorage
 import JGProgressHUD
 import SDWebImage
 
+protocol SettingsControllerDelegate {
+    func didSaveSettings()
+}
+
 class CustomUIImagePickerController: UIImagePickerController {
     var imageButton: UIButton?
 }
 
-
 class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    var delegate: SettingsControllerDelegate?
     
     lazy var imageButton1 = createButton()
     lazy var imageButton2 = createButton()
@@ -280,7 +285,9 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             if let err = err{
                 print(err)
             }
-            self.dismiss(animated: true)
+            self.dismiss(animated: true) {
+                self.delegate?.didSaveSettings()
+            }
         }
     }
     
