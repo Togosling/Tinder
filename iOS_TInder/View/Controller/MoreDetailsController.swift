@@ -14,8 +14,7 @@ class MoreDetailsController: UIViewController, UIScrollViewDelegate {
     var cardViewModel: CardViewModel? {
         didSet {
             infoLabel.attributedText = cardViewModel?.attributedString
-            guard let firstImageUrl = cardViewModel?.imageUrls.first, let url = URL(string: firstImageUrl) else { return }
-            imageView.sd_setImage(with: url)
+            swipingPhotosController.cardViewModel = cardViewModel
         }
     }
     
@@ -27,12 +26,7 @@ class MoreDetailsController: UIViewController, UIScrollViewDelegate {
         return sv
     }()
     
-    let imageView: UIImageView = {
-        let iv = UIImageView(image: #imageLiteral(resourceName: "kelly3"))
-        iv.contentMode = .scaleAspectFill
-        iv.clipsToBounds = true
-        return iv
-    }()
+    let swipingPhotosController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     
     let infoLabel: UILabel = {
         let label = UILabel()
@@ -48,11 +42,11 @@ class MoreDetailsController: UIViewController, UIScrollViewDelegate {
     }()
     
     lazy var dislikeButton = self.createButton(image: #imageLiteral(resourceName: "cancel").withRenderingMode(.alwaysOriginal), selector: #selector(handleDislike))
-    lazy var superLikeButton = self.createButton(image: #imageLiteral(resourceName: "heart").withRenderingMode(.alwaysOriginal), selector: #selector(handleDislike))
-    lazy var likeButton = self.createButton(image: #imageLiteral(resourceName: "star").withRenderingMode(.alwaysOriginal), selector: #selector(handleDislike))
+    lazy var superLikeButton = self.createButton(image: #imageLiteral(resourceName: "star").withRenderingMode(.alwaysOriginal), selector: #selector(handleDislike))
+    lazy var likeButton = self.createButton(image: #imageLiteral(resourceName: "heart").withRenderingMode(.alwaysOriginal), selector: #selector(handleDislike))
     
     lazy var stackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [dislikeButton, likeButton, superLikeButton])
+        let stackView = UIStackView(arrangedSubviews: [dislikeButton, superLikeButton, likeButton])
         stackView.distribution = .fillEqually
         stackView.spacing = -32
         return stackView
@@ -74,7 +68,7 @@ class MoreDetailsController: UIViewController, UIScrollViewDelegate {
     
     fileprivate func addSubviews() {
         view.addSubview(scrollView)
-        view.addSubview(imageView)
+        view.addSubview(swipingPhotosController.view)
         view.addSubview(infoLabel)
         view.addSubview(dismissButton)
         view.addSubview(stackView)
@@ -85,15 +79,15 @@ class MoreDetailsController: UIViewController, UIScrollViewDelegate {
         scrollView.snp.makeConstraints { make in
             make.size.equalToSuperview()
         }
-        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
+        swipingPhotosController.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width)
         infoLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(16)
+            make.top.equalTo(swipingPhotosController.view.snp.bottom).offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
         dismissButton.snp.makeConstraints { make in
             make.width.height.equalTo(50)
-            make.top.equalTo(imageView.snp.bottom).offset(-25)
+            make.top.equalTo(swipingPhotosController.view.snp.bottom).offset(-25)
             make.trailing.equalToSuperview().offset(-25)
         }
         stackView.snp.makeConstraints { make in
@@ -113,7 +107,7 @@ class MoreDetailsController: UIViewController, UIScrollViewDelegate {
         let changeY = -scrollView.contentOffset.y
         var width = view.frame.width + changeY * 2
         width = max(view.frame.width, width)
-        imageView.frame = CGRect(x: min(0, -changeY), y: min(0, -changeY), width: width, height: width)
+        swipingPhotosController.view.frame = CGRect(x: min(0, -changeY), y: min(0, -changeY), width: width, height: width)
     }
     
     fileprivate func createButton(image: UIImage, selector: Selector) -> UIButton {
