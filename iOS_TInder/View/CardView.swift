@@ -10,7 +10,7 @@ import SnapKit
 import SDWebImage
 
 protocol CardViewDelegate {
-    func didTapMoreInfo()
+    func didTapMoreInfo(cardViewModel: CardViewModel)
 }
 
 class CardView: UIView {
@@ -79,7 +79,7 @@ class CardView: UIView {
     }
     
     @objc fileprivate func handleMoreInfo() {
-        self.delegate?.didTapMoreInfo()
+        self.delegate?.didTapMoreInfo(cardViewModel: self.cardViewModel)
     }
     
     override func layoutSubviews() {

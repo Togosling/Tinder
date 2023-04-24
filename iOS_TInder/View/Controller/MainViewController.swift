@@ -110,9 +110,10 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
         fetchUserData()
     }
     
-    func didTapMoreInfo() {
+    func didTapMoreInfo(cardViewModel: CardViewModel) {
         let moreDetailsController = MoreDetailsController()
         moreDetailsController.modalPresentationStyle = .fullScreen
+        moreDetailsController.cardViewModel = cardViewModel
         present(moreDetailsController, animated: true)
     }
     fileprivate func setupViews() {
