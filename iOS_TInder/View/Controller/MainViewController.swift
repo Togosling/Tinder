@@ -57,7 +57,7 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Looking for Users"
         hud.show(in: view)
-        guard let minAge = currentUser?.minSeekingAge, let maxAge = currentUser?.maxSeekingAge else {return}
+        let minAge = currentUser?.minSeekingAge ?? SettingsController.minSeekingAge, maxAge = currentUser?.maxSeekingAge ?? SettingsController.maxSeekingAge
         let query = Firestore.firestore().collection("users").whereField("age", isGreaterThan: minAge).whereField("age", isLessThan: maxAge)
         query.getDocuments {snapShot, err in
             hud.dismiss(animated: true)

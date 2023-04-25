@@ -140,6 +140,9 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         return section == 0 ? 0 : 1
     }
     
+    static let minSeekingAge = 18
+    static let maxSeekingAge = 50
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 5 {
@@ -147,10 +150,10 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             cell.contentView.isUserInteractionEnabled = false
             cell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
             cell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
-            cell.minLabel.text = "Min \(user?.minSeekingAge ?? -1)"
-            cell.maxLabel.text = "Max \(user?.maxSeekingAge ?? -1)"
-            cell.minSlider.value = Float(user?.minSeekingAge ?? -1)
-            cell.maxSlider.value = Float(user?.maxSeekingAge ?? -1)
+            cell.minLabel.text = "Min \(user?.minSeekingAge ?? SettingsController.minSeekingAge)"
+            cell.maxLabel.text = "Max \(user?.maxSeekingAge ?? SettingsController.maxSeekingAge)"
+            cell.minSlider.value = Float(user?.minSeekingAge ?? SettingsController.minSeekingAge)
+            cell.maxSlider.value = Float(user?.maxSeekingAge ?? SettingsController.maxSeekingAge)
             return cell
         }
         let cell = SettingsCell(style: .default, reuseIdentifier: "cellId")
