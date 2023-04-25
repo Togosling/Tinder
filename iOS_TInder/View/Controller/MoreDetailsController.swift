@@ -26,7 +26,7 @@ class MoreDetailsController: UIViewController, UIScrollViewDelegate {
         return sv
     }()
     
-    let swipingPhotosController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    let swipingPhotosController = SwipingPhotosController()
     
     let infoLabel: UILabel = {
         let label = UILabel()

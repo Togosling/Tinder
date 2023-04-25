@@ -20,33 +20,11 @@ class CardView: UIView {
     var cardViewModel: CardViewModel! {
         didSet {
             descriptionLabel.attributedText = cardViewModel.attributedString
-            let url = URL(string: cardViewModel.imageUrls.first ?? "")
-            imageView.sd_setImage(with: url)
-            descriptionLabel.textAlignment = cardViewModel.textAlignment
-            
-            (0 ..< cardViewModel.imageUrls.count).forEach { (_) in
-                let barView = UIView()
-                barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
-                barView.layer.cornerRadius = 4
-                barStackView.addArrangedSubview(barView)
-            }
-            barStackView.arrangedSubviews.first?.backgroundColor = .white
-            
-            cardViewModel.imageIndexObserver = {[weak self] (imageUrl, index) in
-                self?.imageView.sd_setImage(with: URL(string: imageUrl ?? ""))
-                self?.barStackView.arrangedSubviews.forEach { iv in
-                    iv.backgroundColor = UIColor(white: 0, alpha: 0.1)
-                }
-                self?.barStackView.arrangedSubviews[index].backgroundColor = .white
+            swipingPhotosController.cardViewModel = self.cardViewModel
             }
         }
-    }
     
-    let imageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFill
-        return iv
-    }()
+    fileprivate let swipingPhotosController = SwipingPhotosController(isCardViewMode: true)
     
     let descriptionLabel: UILabel = {
         let label = UILabel()
@@ -155,8 +133,8 @@ class CardView: UIView {
     }
     
     fileprivate func setupViews() {
-        addSubview(imageView)
-        imageView.snp.makeConstraints { make in
+        addSubview(swipingPhotosController.view)
+        swipingPhotosController.view.snp.makeConstraints { make in
             make.size.equalToSuperview()
         }
         
