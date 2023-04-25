@@ -6,9 +6,10 @@
 //
 
 import UIKit
+import SnapKit
 
 
-class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource {
+class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     var cardViewModel: CardViewModel? {
         didSet {
@@ -19,6 +20,39 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
             })
             
             setViewControllers([controllers.first!], direction: .forward, animated: false)
+            setupBarViews()
+
+        }
+    }
+    
+    fileprivate let barsStackView = UIStackView(arrangedSubviews: [])
+    fileprivate let deselectedBarColor = UIColor(white: 0, alpha: 0.1)
+    
+    fileprivate func setupBarViews() {
+        cardViewModel?.imageUrls.forEach { (_) in
+            let barView = UIView()
+            barView.backgroundColor = deselectedBarColor
+            barView.layer.cornerRadius = 2
+            barsStackView.addArrangedSubview(barView)
+        }
+        barsStackView.arrangedSubviews.first?.backgroundColor = .white
+        barsStackView.spacing = 4
+        barsStackView.distribution = .fillEqually
+        
+        view.addSubview(barsStackView)
+        barsStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(60)
+            make.leading.equalToSuperview().offset(8)
+            make.trailing.equalToSuperview().offset(-8)
+            make.height.equalTo(4)
+        }
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        let currentPhotoController = viewControllers?.first
+        if let index = controllers.firstIndex(where: {$0 == currentPhotoController}) {
+            barsStackView.arrangedSubviews.forEach({$0.backgroundColor = deselectedBarColor})
+            barsStackView.arrangedSubviews[index].backgroundColor = .white
         }
     }
     
@@ -27,6 +61,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
+        delegate = self
         view.backgroundColor = .white
     }
     
