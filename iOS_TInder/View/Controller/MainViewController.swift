@@ -12,7 +12,7 @@ import FirebaseAuth
 import JGProgressHUD
 
 class MainViewController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
-        
+            
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControlls = HomeBottomControlsStackView()
@@ -65,17 +65,28 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
                 print(err)
                 return
             }
+            
+            var previousCardView: CardView?
+            
+            
             snapShot?.documents.forEach({ docSnapShot in
                 let userDictionary = docSnapShot.data()
                 let user = User(documents: userDictionary)
                 if user.uid != Auth.auth().currentUser?.uid {
-                    self.setupFirestoreUserCardView(user: user)
+                    let cardVIew = self.setupFirestoreUserCardView(user: user)
+                    
+                    previousCardView?.nextCardView = cardVIew
+                    previousCardView = cardVIew
+                    
+                    if self.topCardView == nil {
+                        self.topCardView = cardVIew
+                    }
                 }
             })
         }
     }
     
-    fileprivate func setupFirestoreUserCardView(user: User) {
+    fileprivate func setupFirestoreUserCardView(user: User) -> CardView {
         let cardView = CardView(frame: .zero)
         cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
@@ -84,12 +95,35 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
         cardView.snp.makeConstraints { make in
             make.size.equalToSuperview()
         }
+        return cardView
     }
 
     fileprivate func addTargets() {
         topStackView.profileButton.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
         bottomControlls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
+        bottomControlls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
     }
+    var topCardView: CardView?
+    
+    @objc func handleLike() {
+        
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+            let degrees: CGFloat = 15
+            let angle = degrees * .pi / 180
+            
+            let rotationalTransformation = CGAffineTransform(rotationAngle: angle)
+            self.topCardView?.transform = rotationalTransformation.translatedBy(x: 600, y: 0)
+        } completion: { _ in
+            self.topCardView?.removeFromSuperview()
+            self.topCardView = self.topCardView?.nextCardView
+        }
+
+    }
+    func didRemoveCard(cardView: CardView) {
+        self.topCardView?.removeFromSuperview()
+        self.topCardView = self.topCardView?.nextCardView
+    }
+    
     @objc func handleRefresh() {
         self.fetchDataFromFirestore()
     }
