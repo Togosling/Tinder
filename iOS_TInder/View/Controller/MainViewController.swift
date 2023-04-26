@@ -59,6 +59,7 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
         hud.show(in: view)
         let minAge = currentUser?.minSeekingAge ?? SettingsController.minSeekingAge, maxAge = currentUser?.maxSeekingAge ?? SettingsController.maxSeekingAge
         let query = Firestore.firestore().collection("users").whereField("age", isGreaterThan: minAge).whereField("age", isLessThan: maxAge)
+        topCardView = nil
         query.getDocuments {snapShot, err in
             hud.dismiss(animated: true)
             if let err = err {
@@ -102,23 +103,42 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
         topStackView.profileButton.addTarget(self, action: #selector(handleRegistration), for: .touchUpInside)
         bottomControlls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         bottomControlls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+        bottomControlls.dislikeButton.addTarget(self, action: #selector(dislikeButton), for: .touchUpInside)
     }
-    var topCardView: CardView?
     
-    @objc func handleLike() {
+    @objc func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
+        let duration = 0.5
+        let translationAnimation = CABasicAnimation(keyPath: "position.x")
+        translationAnimation.toValue = translation
+        translationAnimation.duration = duration
+        translationAnimation.fillMode = .forwards
+        translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        translationAnimation.isRemovedOnCompletion = false
         
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
-            let degrees: CGFloat = 15
-            let angle = degrees * .pi / 180
-            
-            let rotationalTransformation = CGAffineTransform(rotationAngle: angle)
-            self.topCardView?.transform = rotationalTransformation.translatedBy(x: 600, y: 0)
-        } completion: { _ in
-            self.topCardView?.removeFromSuperview()
-            self.topCardView = self.topCardView?.nextCardView
+        let rotationAnimation = CABasicAnimation(keyPath: "rotation.z")
+        rotationAnimation.toValue = angle * CGFloat.pi / 180
+        rotationAnimation.duration = duration
+        
+        let cardView = topCardView
+        topCardView = cardView?.nextCardView
+        
+        CATransaction.setCompletionBlock {
+            cardView?.removeFromSuperview()
         }
-
+        
+        cardView?.layer.add(translationAnimation, forKey: "translaition")
+        cardView?.layer.add(rotationAnimation, forKey: "rotation")
     }
+    @objc func dislikeButton() {
+        performSwipeAnimation(translation: -700, angle: -15)
+    }
+    
+    var topCardView: CardView?
+
+    @objc func handleLike() {
+        performSwipeAnimation(translation: 700, angle: 15)
+    }
+    
     func didRemoveCard(cardView: CardView) {
         self.topCardView?.removeFromSuperview()
         self.topCardView = self.topCardView?.nextCardView
