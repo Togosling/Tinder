@@ -86,7 +86,8 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
                 let userDictionary = docSnapShot.data()
                 let user = User(documents: userDictionary)
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-                let hasSwipesBefore = self.swipes[user.uid!] != nil
+                let hasSwipesBefore = true
+//                let hasSwipesBefore = self.swipes[user.uid!] != nil
                 if isNotCurrentUser && hasSwipesBefore {
                     let cardVIew = self.setupFirestoreUserCardView(user: user)
                     
@@ -158,6 +159,10 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
     fileprivate func saveSwipeToFirestore(didLike: Int) {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         guard let cardUID = topCardView?.cardViewModel.uid else {return}
+        
+        if didLike == 1 {
+            checkIfMatchExists(cardUID: cardUID)
+        }
         let documentData = [cardUID: didLike]
         Firestore.firestore().collection("swipes").document(uid).getDocument { snapshot, err in
             if let err = err {
@@ -171,7 +176,6 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
                         return
                     }
                     print("Successfully updated swipe")
-                    self.checkIfMatchExists(cardUID: cardUID)
                 }
             } else {
                 Firestore.firestore().collection("swipes").document(uid).setData(documentData) { err in
@@ -180,7 +184,6 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
                         return
                     }
                     print("Successfully saved swipe")
-                    self.checkIfMatchExists(cardUID: cardUID)
                 }
             }
         }
@@ -197,13 +200,18 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
             guard let uid = Auth.auth().currentUser?.uid else {return}
             let hasMatched = data[uid] as? Int == 1
             if hasMatched {
-                let hud = JGProgressHUD(style: .dark)
-                hud.textLabel.text = "Find a Match"
-                hud.show(in: self.view)
-                hud.dismiss(afterDelay: 5)
+                self.presentMatchView(cardUID: cardUID)
             }
         }
         
+    }
+    
+    fileprivate func presentMatchView(cardUID: String) {
+         let matchView = MatchView()
+        view.addSubview(matchView)
+        matchView.snp.makeConstraints { make in
+            make.size.equalToSuperview()
+        }
     }
     
     func didRemoveCard(cardView: CardView) {
@@ -212,6 +220,7 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
     }
     
     @objc func handleRefresh() {
+        cardsDeckView.subviews.forEach { $0.removeFromSuperview()}
         self.fetchDataFromFirestore()
     }
     
