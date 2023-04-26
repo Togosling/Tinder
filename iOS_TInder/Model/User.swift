@@ -49,6 +49,6 @@ struct User: ProducesCardViewModel {
             imageUrls.append(imageUrl)
         }
 
-        return CardViewModel(imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
+        return CardViewModel(uid: self.uid ?? "", imageNames: imageUrls, attributedString: attributedText, textAlignment: .left)
     }
 }

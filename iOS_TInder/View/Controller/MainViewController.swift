@@ -130,13 +130,44 @@ class MainViewController: UIViewController, SettingsControllerDelegate, LoginCon
         cardView?.layer.add(rotationAnimation, forKey: "rotation")
     }
     @objc func dislikeButton() {
+        saveSwipeToFirestore(didLike: -1)
         performSwipeAnimation(translation: -700, angle: -15)
     }
     
     var topCardView: CardView?
 
     @objc func handleLike() {
+        saveSwipeToFirestore(didLike: 1)
         performSwipeAnimation(translation: 700, angle: 15)
+    }
+    
+    fileprivate func saveSwipeToFirestore(didLike: Int) {
+        guard let uid = Auth.auth().currentUser?.uid else {return}
+        guard let cardUID = topCardView?.cardViewModel.uid else {return}
+        let documentData = [cardUID: didLike]
+        Firestore.firestore().collection("swipes").document(uid).getDocument { snapshot, err in
+            if let err = err {
+                print("Failed to fetch swipe document", err)
+                return
+            }
+            if snapshot?.exists == true {
+                Firestore.firestore().collection("swipes").document(uid).updateData(documentData) { err in
+                    if let err = err {
+                        print("Failed to update swipe", err)
+                        return
+                    }
+                    print("Successfully updated swipe")
+                }
+            } else {
+                Firestore.firestore().collection("swipes").document(uid).setData(documentData) { err in
+                    if let err = err {
+                        print("Failed to save swipe", err)
+                        return
+                    }
+                    print("Successfully saved swipe")
+                }
+            }
+        }
     }
     
     func didRemoveCard(cardView: CardView) {
